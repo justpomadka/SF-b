@@ -1,0 +1,10 @@
+money=int(input())
+per_cent={'ТКБ': 5.6, 'СКБ':5.9, 'ВТБ':4.28, 'СБЕР':4.0}
+L=(list(per_cent.values()))
+deposit1=int((L[0]*money)/100)
+deposit2=int((L[1]*money)/100)
+deposit3=int((L[2]*money)/100)
+deposit4=int((L[3]*money)/100)
+deposit=[deposit1,deposit2,deposit3,deposit4]
+print('deposit=',deposit)
+print('Максимальная сумма, которую вы можете заработать — ',max(deposit))
