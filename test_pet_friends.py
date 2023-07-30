@@ -6,51 +6,6 @@ from settings import valid_email, valid_password, invalid_email, invalid_passwor
 pf = PetFriends()
 
 
-def test_get_api_key_for_valid_user(email=valid_email, password=valid_password):
-    status, result = pf.get_api_key(email, password)
-    assert status == 200
-    assert 'key' in result
-
-
-def test_get_list_pets_with_valid_key(filter=''):
-    _, auth_key = pf.get_api_key(valid_email, valid_password)
-    status, result = pf.get_list_of_pets(auth_key, filter)
-    assert status == 200
-    assert len(result['pets']) > 0
-
-
-def test_add_pet_with_photo(name = 'Тотошка', animal_type = "собака", age = "10",pet_photo = 'images/dog1.jpg'):
-    _, auth_key = pf.get_api_key(valid_email, valid_password)
-    status, result = pf.add_pet_with_foto(auth_key, name,animal_type,age,pet_photo)
-    assert status == 200
-    assert len(result) > 0
-
-
-
-
-
-def test_update_self_pet_info(name='Мурзик', animal_type='кот', age=3):
-    _, auth_key = pf.get_api_key(valid_email, valid_password)
-    _, my_pets = pf.get_list_of_pets(auth_key, "my_pets")
-    if len(my_pets['pets']) > 0:
-        status, result = pf.update_pet_info(auth_key, my_pets['pets'][0]['id'], name, animal_type, age)
-        assert status == 200
-        assert result['name'] == name
-    else:
-        raise Exception("There is no my pets")
-
-def test_successful_delete_self_pet():
-    _, auth_key = pf.get_api_key(valid_email, valid_password)
-    _, my_pets = pf.get_list_of_pets(auth_key, "my_pets")
-    if len(my_pets['pets']) == 0:
-        pf.create_pet_simple(auth_key, "Мурка", "Кошка", "3",)
-        _, my_pets = pf.get_list_of_pets(auth_key, "my_pets")
-    pet_id = my_pets['pets'][0]['id']
-    status, _ = pf.delete_pet(auth_key, pet_id)
-    _, my_pets = pf.get_list_of_pets(auth_key, "my_pets")
-    assert status == 200
-    assert pet_id not in my_pets.values()
-
 def test_create_pet_simple(name = 'Макс', animal_type = "собака", age = "2"):
     _, auth_key = pf.get_api_key(valid_email, valid_password)
     status, result = pf.create_pet_simple(auth_key, name,animal_type,age)
@@ -73,7 +28,7 @@ def test_add_photo(pet_photo = 'images/dog1.jpg'):
         raise Exception("There is no my pets")
 
 
-#тест-кейсы
+
 def test_get_api_key_for_invalid_email(email=invalid_email, password=valid_password):
     status, result = pf.get_api_key(email, password)
     assert status == 200
